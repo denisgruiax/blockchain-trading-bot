@@ -1,92 +1,101 @@
 package com.denisgruiax.blockchaintradingbot;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;
-
-import android.view.View;
-import android.view.Menu;
+import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
-
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.denisgruiax.blockchaintradingbot.databinding.ActivityMainBinding;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import androidx.navigation.ui.AppBarConfiguration;
+import com.denisgruiax.blockchaintradingbot.activities.MainActivity;
+import multiversx.Exceptions.CannotDeriveKeysException;
+import multiversx.Wallet;
+import org.bouncycastle.crypto.generators.PKCS5S2ParametersGenerator;
 
 public class LoginActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityMainBinding binding;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private String mnemonic;
+    Wallet wallet;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
 
-        Button confirmButton = findViewById(R.id.confirmButton);
+        EditText mnemonicText = findViewById(R.id.mnemonicText);
+        Button confirmButton = findViewById(R.id.buttonLogin);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         confirmButton.setOnClickListener(view -> {
+            try {
+                mnemonic = mnemonicText.getText().toString();
+                wallet = Wallet.deriveFromMnemonic(mnemonic, 0);
 
-            List<String> test = new ArrayList<>();
-            test.add("drill");
+                putMnemonicInMemmory("mnemonic", mnemonic);
+                // toastLongMessage(wallet.toString());
 
-            Toast toast = Toast.makeText(getApplicationContext(), "result = " + checkAllFields(test), Toast.LENGTH_LONG);
-            toast.show();
+                if (mnemonic.length() > 10) {
+                    Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
+                    mainActivity.putExtra("mnemonic", mnemonic);
+
+                    startActivity(mainActivity);
+                }
+            } catch (CannotDeriveKeysException cannotDeriveKeysException) {
+                toastLongMessage("Error log into wallet!");
+            }
         });
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        //textView.setText(savedInstanceState.getString("Denis"));
+    protected void onResume() {
+        super.onResume();
+
+        String storedMnemonic = sharedPreferences.getString("mnemonic", null);
+
+        if (storedMnemonic != null) {
+            mnemonic = storedMnemonic;
+            try {
+                wallet = Wallet.deriveFromMnemonic(mnemonic, 0);
+
+                // toastLongMessage(mnemonic);
+                if (mnemonic.length() > 10) {
+                    Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
+                    mainActivity.putExtra("mnemonic", mnemonic);
+                    startActivity(mainActivity);
+                }
+
+                finish(); // Optional: Finish the login activity
+            } catch (CannotDeriveKeysException cannotDeriveKeysException) {
+                toastLongMessage("Error log into wallet!");
+            }
+        }
     }
 
-    // Invoked when the activity might be temporarily destroyed; save the instance state here.
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("public", "denis");
-        outState.putString("private", "pass");
+        outState.putString("mnemonic", mnemonic);
 
-        // Call superclass to save any view hierarchy.
         super.onSaveInstanceState(outState);
     }
 
-    private boolean checkWord(String word) {
-        String line;
-        InputStream inputStream = getResources().openRawResource(R.raw.bip39_words);
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
-            while ((line = bufferedReader.readLine()) != null)
-            {
-                System.out.println(line + " - " + word);
-                if (line.contains(word))
-                    return true;
-            }
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
-
-        return false;
+    private void putMnemonicInMemmory(String key, String mnemonic) {
+        editor = sharedPreferences.edit();
+        editor.putString(key, mnemonic);
+        editor.apply();
     }
 
-    private boolean checkAllFields(List<String> words) {
-        for(String word : words)
-            if(!checkWord(word))
-                return false;
-
-        return true;
+    private void toastLongMessage(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        toast.show();
     }
 }
