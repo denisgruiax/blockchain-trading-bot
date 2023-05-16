@@ -3,7 +3,6 @@ package com.denisgruiax.blockchaintradingbot;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +12,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import com.denisgruiax.blockchaintradingbot.activities.MainActivity;
 import multiversx.Exceptions.CannotDeriveKeysException;
 import multiversx.Wallet;
-import org.bouncycastle.crypto.generators.PKCS5S2ParametersGenerator;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -34,7 +32,8 @@ public class LoginActivity extends AppCompatActivity {
 
         confirmButton.setOnClickListener(view -> {
             try {
-                mnemonic = mnemonicText.getText().toString();
+                //mnemonic = mnemonicText.getText().toString();
+                mnemonic = "emotion spare multiply lecture rude machine raise radio ability doll depend equip pass ghost cabin delay birth opera shoe force any slow fluid old";
                 wallet = Wallet.deriveFromMnemonic(mnemonic, 0);
 
                 putMnemonicInMemmory("mnemonic", mnemonic);

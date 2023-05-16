@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Menu;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,21 +21,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.denisgruiax.blockchaintradingbot.databinding.ActivityMainBinding;
 
+import org.bouncycastle.util.encoders.DecoderException;
 import org.bouncycastle.util.encoders.Hex;
-import org.w3c.dom.Text;
+import org.bitcoinj.core.Bech32;
 
 import java.util.Base64;
 
+import multiversx.Address;
 import multiversx.Exceptions;
 import multiversx.Wallet;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private String mnemonic;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private String mnemonic;
     private Wallet wallet;
+    private Address address;
     private TextView walletName;
     private TextView publicKey;
 
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             toastLongMessage("Error log into wallet!");
         }
 
-        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_wallet_statistics, R.id.nav_bot_startegy, R.id.nav_others)
                 .setOpenableLayout(drawer).build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
@@ -85,7 +87,24 @@ public class MainActivity extends AppCompatActivity {
         publicKey = headerView.findViewById(R.id.textView2);
 
         walletName.setText(wallet.toString());
-        publicKey.setText(new String(Hex.encode(wallet.getPublicKey())));
+
+        String hexCode = new String(Hex.encode(wallet.getPublicKey()));
+
+        try{
+            address = Address.fromHex(hexCode);
+        }catch (DecoderException | Exceptions.AddressException decoderException){
+            publicKey.setText(decoderException.toString());
+        }
+
+        String pubkey = "NULL";
+
+        try {
+            pubkey = address.bech32();
+        }catch (Exceptions.AddressException addressException){
+            addressException.printStackTrace();
+        }
+
+        publicKey.setText(pubkey);
     }
 
     @Override
