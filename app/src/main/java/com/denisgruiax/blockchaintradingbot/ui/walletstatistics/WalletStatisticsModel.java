@@ -11,20 +11,39 @@ public class WalletStatisticsModel extends ViewModel {
 
     private final MutableLiveData<String> balance;
     private final MutableLiveData<String> dailyPNL;
-
-    private Address address;
+    private static Integer count;
 
     public WalletStatisticsModel() {
         balance = new MutableLiveData<>();
+        balance.setValue("$30.43");
+
         dailyPNL = new MutableLiveData<>();
+        dailyPNL.setValue("+12%");
+
+        count = 0;
 
         MediatorLiveData<String> mediatorLiveData = new MediatorLiveData<>();
+
         mediatorLiveData.addSource(balance, text -> mediatorLiveData.setValue(text));
         mediatorLiveData.addSource(dailyPNL, text -> mediatorLiveData.setValue(text));
-
     }
 
-    public LiveData<String> getText() {
+    public LiveData<String> getBalance() {
         return balance;
+    }
+    
+    public LiveData<String> getDailyPNL(){
+        return dailyPNL;
+    }
+
+    public void setBalance(Integer value){
+        balance.setValue(value.toString());
+    }
+    public void setB(){
+        count++;
+    }
+
+    public Integer getB(){
+        return count;
     }
 }

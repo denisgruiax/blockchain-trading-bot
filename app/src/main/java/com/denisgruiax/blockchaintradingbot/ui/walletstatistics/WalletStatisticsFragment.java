@@ -25,14 +25,33 @@ public class WalletStatisticsFragment extends Fragment {
         binding = FragmentWalletStatisticsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView balanceText = binding.balanceText;
-        final TextView dailyPNLText= binding.dailyPNL;
-        final Button getBalance = binding.button;
+        final TextView balance = binding.balance;
+        final TextView dailyPNL = binding.dailyPNL;
+        final Button button = binding.button;
 
-        walletStatisticsModel.getText().observe(getViewLifecycleOwner(), balanceText::setText);
-        walletStatisticsModel.getText().observe(getViewLifecycleOwner(), dailyPNLText::setText);
+
+        walletStatisticsModel.getBalance().observe(getViewLifecycleOwner(), balance::setText);
+        walletStatisticsModel.getDailyPNL().observe(getViewLifecycleOwner(), dailyPNL::setText);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        walletStatisticsModel.setB();
+                        walletStatisticsModel.setBalance(walletStatisticsModel.getB());
+                    }
+                });
+            }
+        });
 
         return root;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
     }
 
     @Override
