@@ -2,6 +2,7 @@ package com.denisgruiax.blockchaintradingbot.ui.walletstatistics;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +14,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.denisgruiax.blockchaintradingbot.databinding.FragmentWalletStatisticsBinding;
-import com.denisgruiax.blockchaintradingbot.domains.BalanceFetchTask;
 
-public class WalletStatisticsFragment extends Fragment implements BalanceFetchTask.BalanceUpdateListener {
+import java.util.Random;
+
+public class WalletStatisticsFragment extends Fragment {
 
     private FragmentWalletStatisticsBinding binding;
-    private Handler handler;
     private TextView balanceText;
     private TextView dailyPNLText;
-    private Button getBalance;
+    private Button incrementBalance;
+
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable runnable;
+    private Random random = new Random();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -31,30 +36,34 @@ public class WalletStatisticsFragment extends Fragment implements BalanceFetchTa
         binding = FragmentWalletStatisticsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView balanceText = binding.balanceText;
-        final TextView dailyPNLText= binding.dailyPNL;
-        final Button getBalance = binding.button;
+        balanceText = binding.balance;
+        dailyPNLText = binding.dailyPNL;
+        incrementBalance = binding.button;
 
         walletStatisticsModel.getBalanceText().observe(getViewLifecycleOwner(), balanceText::setText);
         walletStatisticsModel.getDailyPNLText().observe(getViewLifecycleOwner(), dailyPNLText::setText);
 
+        incrementBalance.setOnClickListener(view ->{
+            balanceText.setText("$20");
+            dailyPNLText.setText("12%");
+        });
+
+        updateUserInterface();
+
         return root;
     }
 
-    private void startFetchingBalance() {
-        BalanceFetchTask balanceFetchTask = new BalanceFetchTask(this);
-        balanceFetchTask.execute();
-        handler.postDelayed(new Runnable() {
+    public void updateUserInterface(){
+        runnable = new Runnable() {
             @Override
             public void run() {
-                startFetchingBalance();
-            }
-        }, 5000);
-    }
+                balanceText.setText(String.valueOf(random.nextInt(100)));
 
-    @Override
-    public void onBalanceUpdated(String balance) {
-        balanceText.setText(balance);
+                handler.postDelayed(this, 2500);
+            }
+        };
+
+        handler.post(runnable);
     }
 
     @Override

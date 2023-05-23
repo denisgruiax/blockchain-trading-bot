@@ -21,12 +21,12 @@ public class WalletStatisticsModel extends ViewModel {
         MediatorLiveData<String> mediatorLiveData = new MediatorLiveData<>();
         mediatorLiveData.addSource(balance, text -> mediatorLiveData.setValue(text));
         mediatorLiveData.addSource(dailyPNL, text -> mediatorLiveData.setValue(text));
-
     }
 
     public LiveData<String> getBalanceText() {
         return balance;
     }
+
     public LiveData<String> getDailyPNLText() {
         return dailyPNL;
     }
