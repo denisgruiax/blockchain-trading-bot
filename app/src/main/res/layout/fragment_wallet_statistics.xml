@@ -7,12 +7,9 @@
     tools:context=".ui.walletstatistics.WalletStatisticsFragment">
 
     <TextView
-        android:id="@+id/balanceText"
+        android:id="@+id/balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="32sp"
@@ -22,16 +19,12 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.101"
         tools:text="$0.00" />
 
     <TextView
         android:id="@+id/dailyPNL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:textAlignment="center"
         android:textColor="@color/green"
         android:textSize="12sp"
@@ -39,8 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/balanceText"
-        app:layout_constraintVertical_bias="0.174"
+        app:layout_constraintTop_toBottomOf="@+id/balance"
         tools:text="PNL: 30%" />
 
     <Button
@@ -49,6 +41,8 @@
         android:layout_height="wrap_content"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dailyPNL"
-        tools:layout_editor_absoluteX="148dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dailyPNL" />
 </androidx.constraintlayout.widget.ConstraintLayout>

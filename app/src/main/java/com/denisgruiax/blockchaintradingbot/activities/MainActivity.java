@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.denisgruiax.blockchaintradingbot.R;
+import com.denisgruiax.blockchaintradingbot.ui.walletstatistics.WalletStatisticsModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
