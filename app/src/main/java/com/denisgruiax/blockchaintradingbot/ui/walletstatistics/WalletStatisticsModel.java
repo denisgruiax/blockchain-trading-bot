@@ -24,7 +24,10 @@ public class WalletStatisticsModel extends ViewModel {
 
     }
 
-    public LiveData<String> getText() {
+    public LiveData<String> getBalanceText() {
         return balance;
+    }
+    public LiveData<String> getDailyPNLText() {
+        return dailyPNL;
     }
 }

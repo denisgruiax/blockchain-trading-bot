@@ -1,6 +1,7 @@
 package com.denisgruiax.blockchaintradingbot.ui.walletstatistics;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.denisgruiax.blockchaintradingbot.databinding.FragmentWalletStatisticsBinding;
+import com.denisgruiax.blockchaintradingbot.domains.BalanceFetchTask;
 
-public class WalletStatisticsFragment extends Fragment {
+public class WalletStatisticsFragment extends Fragment implements BalanceFetchTask.BalanceUpdateListener {
 
     private FragmentWalletStatisticsBinding binding;
+    private Handler handler;
+    private TextView balanceText;
+    private TextView dailyPNLText;
+    private Button getBalance;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -29,10 +35,26 @@ public class WalletStatisticsFragment extends Fragment {
         final TextView dailyPNLText= binding.dailyPNL;
         final Button getBalance = binding.button;
 
-        walletStatisticsModel.getText().observe(getViewLifecycleOwner(), balanceText::setText);
-        walletStatisticsModel.getText().observe(getViewLifecycleOwner(), dailyPNLText::setText);
+        walletStatisticsModel.getBalanceText().observe(getViewLifecycleOwner(), balanceText::setText);
+        walletStatisticsModel.getDailyPNLText().observe(getViewLifecycleOwner(), dailyPNLText::setText);
 
         return root;
+    }
+
+    private void startFetchingBalance() {
+        BalanceFetchTask balanceFetchTask = new BalanceFetchTask(this);
+        balanceFetchTask.execute();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startFetchingBalance();
+            }
+        }, 5000);
+    }
+
+    @Override
+    public void onBalanceUpdated(String balance) {
+        balanceText.setText(balance);
     }
 
     @Override
