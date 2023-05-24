@@ -7,47 +7,43 @@ import android.preference.PreferenceManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.ui.AppBarConfiguration;
+
 import com.denisgruiax.blockchaintradingbot.activities.MainActivity;
-import multiversx.Exceptions.CannotDeriveKeysException;
-import multiversx.Wallet;
 
 public class LoginActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
-    private String mnemonic;
-    Wallet wallet;
+    private String apiKey;
+    private String secretKey;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
 
-        EditText mnemonicText = findViewById(R.id.mnemonicText);
-        Button confirmButton = findViewById(R.id.buttonLogin);
+        EditText apiKeyText = findViewById(R.id.apiKeyText);
+        EditText secretKeyText = findViewById(R.id.secretKeyText);
+
+        Button loginButton = findViewById(R.id.buttonLogin);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        confirmButton.setOnClickListener(view -> {
-            try {
-                //mnemonic = mnemonicText.getText().toString();
-                mnemonic = "emotion spare multiply lecture rude machine raise radio ability doll depend equip pass ghost cabin delay birth opera shoe force any slow fluid old";
-                wallet = Wallet.deriveFromMnemonic(mnemonic, 0);
+        loginButton.setOnClickListener(view -> {
+            apiKey = apiKeyText.getText().toString();
+            secretKey = secretKeyText.getText().toString();
 
-                putMnemonicInMemmory("mnemonic", mnemonic);
-                // toastLongMessage(wallet.toString());
+            saveDictionaryInMemmory("apiKey", apiKey);
+            saveDictionaryInMemmory("secretKey", secretKey);
+            // toastLongMessage(wallet.toString());
 
-                if (mnemonic.length() > 10) {
-                    Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
-                    mainActivity.putExtra("mnemonic", mnemonic);
+            Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
+            mainActivity.putExtra("apiKey", apiKey);
+            mainActivity.putExtra("secretKey", secretKey);
 
-                    startActivity(mainActivity);
-                }
-            } catch (CannotDeriveKeysException cannotDeriveKeysException) {
-                toastLongMessage("Error log into wallet!");
-            }
+            startActivity(mainActivity);
         });
     }
 
@@ -55,24 +51,20 @@ public class LoginActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        String storedMnemonic = sharedPreferences.getString("mnemonic", null);
+        String storedApiKey = sharedPreferences.getString("apiKey", null);
+        String storedSecretKey = sharedPreferences.getString("secretKey", null);
 
-        if (storedMnemonic != null) {
-            mnemonic = storedMnemonic;
-            try {
-                wallet = Wallet.deriveFromMnemonic(mnemonic, 0);
+        if ((storedApiKey != null) && (storedSecretKey != null)) {
+            apiKey = storedApiKey;
+            secretKey = storedSecretKey;
 
-                // toastLongMessage(mnemonic);
-                if (mnemonic.length() > 10) {
-                    Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
-                    mainActivity.putExtra("mnemonic", mnemonic);
-                    startActivity(mainActivity);
-                }
+            Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
+            mainActivity.putExtra("apiKey", apiKey);
+            mainActivity.putExtra("secretKey", secretKey);
 
-                finish(); // Optional: Finish the login activity
-            } catch (CannotDeriveKeysException cannotDeriveKeysException) {
-                toastLongMessage("Error log into wallet!");
-            }
+            startActivity(mainActivity);
+
+            finish(); // Optional: Finish the login activity
         }
     }
 
@@ -82,14 +74,14 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("mnemonic", mnemonic);
+        outState.putString("apiKey", apiKey);
 
         super.onSaveInstanceState(outState);
     }
 
-    private void putMnemonicInMemmory(String key, String mnemonic) {
-        editor = sharedPreferences.edit();
-        editor.putString(key, mnemonic);
+    private void saveDictionaryInMemmory(String key, String apiKey) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, apiKey);
         editor.apply();
     }
 

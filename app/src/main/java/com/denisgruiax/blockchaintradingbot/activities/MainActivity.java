@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.denisgruiax.blockchaintradingbot.R;
-import com.denisgruiax.blockchaintradingbot.ui.walletstatistics.WalletStatisticsModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -19,29 +18,17 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.denisgruiax.blockchaintradingbot.databinding.ActivityMainBinding;
-
-import org.bouncycastle.util.encoders.DecoderException;
-import org.bouncycastle.util.encoders.Hex;
-import org.bitcoinj.core.Bech32;
-
-import java.util.Base64;
-
-import multiversx.Address;
-import multiversx.Exceptions;
-import multiversx.Wallet;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-    private String mnemonic;
-    private Wallet wallet;
-    private Address address;
-    private TextView walletName;
-    private TextView publicKey;
+    private String apiKey;
+    private String secretKey;
+    private TextView apiKeyText;
+    private TextView secretKeyText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,17 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        Bundle bundle = getIntent().getExtras();
-        mnemonic = bundle.getString("mnemonic");
-
-        try {
-            wallet = Wallet.deriveFromMnemonic(mnemonic, 0);
-            toastLongMessage(mnemonic);
-
-        } catch (Exceptions.CannotDeriveKeysException cannotDeriveKeysException) {
-            toastLongMessage("Error log into wallet!");
-        }
-
         mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_wallet_statistics, R.id.nav_bot_startegy, R.id.nav_others)
                 .setOpenableLayout(drawer).build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -84,28 +60,23 @@ public class MainActivity extends AppCompatActivity {
 
         View headerView = navigationView.getHeaderView(0);
 
-        walletName = headerView.findViewById(R.id.textView1);
-        publicKey = headerView.findViewById(R.id.textView2);
+        apiKeyText = headerView.findViewById(R.id.textView1);
+        secretKeyText = headerView.findViewById(R.id.textView2);
 
-        walletName.setText(wallet.toString());
+        getKeysFromIntent();
 
-        String hexCode = new String(Hex.encode(wallet.getPublicKey()));
+        setTextFields();
+    }
 
-        try{
-            address = Address.fromHex(hexCode);
-        }catch (DecoderException | Exceptions.AddressException decoderException){
-            publicKey.setText(decoderException.toString());
-        }
+    private void getKeysFromIntent() {
+        Bundle bundle = getIntent().getExtras();
+        apiKey = bundle.getString("apiKey");
+        secretKey = bundle.getString("secretKey");
+    }
 
-        String pubkey = "NULL";
-
-        try {
-            pubkey = address.bech32();
-        }catch (Exceptions.AddressException addressException){
-            addressException.printStackTrace();
-        }
-
-        publicKey.setText(pubkey);
+    private void setTextFields() {
+        apiKeyText.setText(apiKey);
+        secretKeyText.setText(secretKey);
     }
 
     @Override
@@ -136,18 +107,8 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
     }
 
-    private void putMnemonicInMemmory(String key, String mnemonic) {
-        editor = sharedPreferences.edit();
-        editor.putString(key, mnemonic);
-        editor.apply();
-    }
-
     private void toastLongMessage(String message) {
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
         toast.show();
-    }
-
-    private String getStringFromByteArray(byte[] bytes) {
-        return Base64.getEncoder().encodeToString(bytes);
     }
 }

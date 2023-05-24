@@ -5,14 +5,10 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import multiversx.Address;
-
 public class WalletStatisticsModel extends ViewModel {
 
     private final MutableLiveData<String> balance;
     private final MutableLiveData<String> dailyPNL;
-
-    private Address address;
 
     public WalletStatisticsModel() {
         balance = new MutableLiveData<>();
