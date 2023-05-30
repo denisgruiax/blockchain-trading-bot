@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.ui.AppBarConfiguration;
 
 import com.denisgruiax.blockchaintradingbot.activities.MainActivity;
+import com.denisgruiax.blockchaintradingbot.keys.Keys;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -32,8 +33,11 @@ public class LoginActivity extends AppCompatActivity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         loginButton.setOnClickListener(view -> {
-            apiKey = apiKeyText.getText().toString();
-            secretKey = secretKeyText.getText().toString();
+            //apiKey = apiKeyText.getText().toString();
+            apiKey = Keys.getApiKey();
+
+            //secretKey = secretKeyText.getText().toString();
+            secretKey = Keys.getSecretKey();
 
             saveDictionaryInMemmory("apiKey", apiKey);
             saveDictionaryInMemmory("secretKey", secretKey);

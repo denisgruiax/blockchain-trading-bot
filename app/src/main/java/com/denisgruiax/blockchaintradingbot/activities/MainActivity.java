@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.binance.connector.client.impl.SpotClientImpl;
 import com.denisgruiax.blockchaintradingbot.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -19,7 +20,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import com.denisgruiax.blockchaintradingbot.databinding.ActivityMainBinding;
-
+import com.binance.connector.client.SpotClient;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -65,7 +66,9 @@ public class MainActivity extends AppCompatActivity {
 
         getKeysFromIntent();
 
-        setTextFields();
+        SpotClient spotClient = new SpotClientImpl(apiKey, secretKey);
+
+        apiKeyText.setText(spotClient.toString());
     }
 
     private void getKeysFromIntent() {
