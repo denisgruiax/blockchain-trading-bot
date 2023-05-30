@@ -1,5 +1,6 @@
 package com.denisgruiax.blockchaintradingbot.ui.walletstatistics;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -22,6 +23,12 @@ import com.binance.connector.client.impl.SpotClientImpl;
 import com.binance.connector.client.impl.WebSocketApiClientImpl;
 import com.denisgruiax.blockchaintradingbot.databinding.FragmentWalletStatisticsBinding;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Random;
 
@@ -38,6 +45,8 @@ public class WalletStatisticsFragment extends Fragment {
     private TextView balanceText;
     private TextView dailyPNLText;
     private Button incrementBalance;
+    private String result;
+    private static final String API_URL = "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30";
 
     private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable runnable;
@@ -58,18 +67,28 @@ public class WalletStatisticsFragment extends Fragment {
         walletStatisticsModel.getBalanceText().observe(getViewLifecycleOwner(), balanceText::setText);
         walletStatisticsModel.getDailyPNLText().observe(getViewLifecycleOwner(), dailyPNLText::setText);
 
-        SpotTrade spotTrade = new SpotTrade();
-        new Thread(spotTrade).start();
+        balanceText.setText("$100");
+        dailyPNLText.setText("100%");
 
-        if (spotTrade.getResult().length() > 0)
-            dailyPNLText.setText(spotTrade.getResult());
-        else
-            dailyPNLText.setText("0!!");
-
-        incrementBalance.setOnClickListener(view -> {
-            balanceText.setText("$20");
-            dailyPNLText.setText("12%");
+        incrementBalance.setOnClickListener(view ->
+        {
+            SpotTrade ss = new SpotTrade();
+            Thread thread = new Thread(ss);
+            thread.start();
+            try {
+                thread.join();
+                result = ss.getResult();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if (result != null) {
+                if (result.length() > 0)
+                    dailyPNLText.setText(result);
+            } else dailyPNLText.setText("0!");
         });
+
+        // Start an instance of FetchJsonTask to fetch the JSON object
+        new FetchJsonTask().execute(API_URL);
 
         //updateUserInterface();
 
@@ -83,7 +102,7 @@ public class WalletStatisticsFragment extends Fragment {
                 String randomNumber = String.valueOf(random.nextInt(100));
                 balanceText.setText(randomNumber);
                 Log.d("Result", randomNumber);
-                handler.postDelayed(this, 2500);
+                handler.postDelayed(this, 500);
             }
         };
 
@@ -94,5 +113,45 @@ public class WalletStatisticsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private class FetchJsonTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String apiUrl = params[0];
+            String result = null;
+
+            try {
+                URL url = new URL(apiUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+
+                // Read the response from the API
+                InputStream inputStream = connection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder stringBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                reader.close();
+                inputStream.close();
+
+                result = stringBuilder.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // Handle the fetched JSON object here
+            if (result != null) {
+                Log.e("Result", result);
+            }
+        }
     }
 }
