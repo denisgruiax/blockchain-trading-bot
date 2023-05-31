@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+
 import com.binance.connector.client.SpotClient;
 import com.binance.connector.client.WebSocketApiClient;
 import com.binance.connector.client.exceptions.BinanceClientException;
@@ -31,6 +34,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Random;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import com.binance.connector.client.utils.signaturegenerator.HmacSignatureGenerator;
 import com.denisgruiax.blockchaintradingbot.domains.spottrade.SpotTrade;
@@ -51,6 +58,7 @@ public class WalletStatisticsFragment extends Fragment {
     private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable runnable;
     private Random random = new Random();
+    Future<String> future;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -72,25 +80,15 @@ public class WalletStatisticsFragment extends Fragment {
 
         incrementBalance.setOnClickListener(view ->
         {
-            SpotTrade ss = new SpotTrade();
-            Thread thread = new Thread(ss);
-            thread.start();
-            try {
-                thread.join();
-                result = ss.getResult();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            if (result != null) {
-                if (result.length() > 0)
-                    dailyPNLText.setText(result);
-            } else dailyPNLText.setText("0!");
+            ExecutorService executorService = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+            SpotTrade spotTrade = new SpotTrade("BTCUSDT", "BUY", "LIMIT", "GTC", 0.01, 21000.0);
+            future = executorService.submit(spotTrade);
         });
 
         // Start an instance of FetchJsonTask to fetch the JSON object
-        new FetchJsonTask().execute(API_URL);
+        // new FetchJsonTask().execute(API_URL);
 
-        //updateUserInterface();
+        updateUserInterface();
 
         return root;
     }
@@ -102,7 +100,24 @@ public class WalletStatisticsFragment extends Fragment {
                 String randomNumber = String.valueOf(random.nextInt(100));
                 balanceText.setText(randomNumber);
                 Log.d("Result", randomNumber);
-                handler.postDelayed(this, 500);
+
+                if (future != null)
+                    if (future.isDone()) {
+                        try {
+                            result = future.get();
+                        } catch (ExecutionException e) {
+                            throw new RuntimeException(e);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        if (result != null) {
+                            if (result.length() > 0)
+                                dailyPNLText.setText(result);
+                        } else dailyPNLText.setText("0!");
+                    }
+
+                handler.postDelayed(this, 2000);
             }
         };
 
