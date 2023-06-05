@@ -1,4 +1,4 @@
-package com.denisgruiax.blockchaintradingbot.activities;
+package com.denisgruiax.blockchaintradingbot.application.mainactivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

@@ -1,9 +1,8 @@
-package com.denisgruiax.blockchaintradingbot.ui.others;
+package com.denisgruiax.blockchaintradingbot.application.mainactivity.others;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.binance.api.client.BinanceApiClientFactory;
-import com.binance.api.client.BinanceApiRestClient;
-import com.binance.api.client.domain.account.Account;
 import com.binance.api.client.domain.account.AssetBalance;
 import com.denisgruiax.blockchaintradingbot.databinding.FragmentOthersBinding;
-import com.denisgruiax.blockchaintradingbot.keys.Keys;
 
 import java.util.List;
 

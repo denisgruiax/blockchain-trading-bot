@@ -11,8 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.ui.AppBarConfiguration;
 
-import com.denisgruiax.blockchaintradingbot.activities.MainActivity;
-import com.denisgruiax.blockchaintradingbot.keys.Keys;
+import com.denisgruiax.blockchaintradingbot.application.mainactivity.MainActivity;
+import com.denisgruiax.blockchaintradingbot.utils.Keys;
 
 public class LoginActivity extends AppCompatActivity {
 

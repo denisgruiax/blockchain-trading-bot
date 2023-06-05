@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".application.mainactivity.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.BlockchainTradingBot.NoActionBar">
             <intent-filter>

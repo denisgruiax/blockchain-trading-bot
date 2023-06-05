@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_wallet_statistics"
-        android:name="com.denisgruiax.blockchaintradingbot.ui.walletstatistics.WalletStatisticsFragment"
+        android:name="com.denisgruiax.blockchaintradingbot.application.mainactivity.walletstatistics.WalletStatisticsFragment"
         android:label="@string/menu_wallet_statistics"
         tools:layout="@layout/fragment_wallet_statistics" />
 
     <fragment
         android:id="@+id/nav_bot_startegy"
-        android:name="com.denisgruiax.blockchaintradingbot.ui.botstrategy.BotStrategyFragment"
+        android:name="com.denisgruiax.blockchaintradingbot.application.mainactivity.botstrategy.BotStrategyFragment"
         android:label="@string/menu_bot_strategy"
         tools:layout="@layout/fragment_bot_strategy" />
 
     <fragment
         android:id="@+id/nav_others"
-        android:name="com.denisgruiax.blockchaintradingbot.ui.others.OthersFragment"
+        android:name="com.denisgruiax.blockchaintradingbot.application.mainactivity.others.OthersFragment"
         android:label="@string/menu_others"
         tools:layout="@layout/fragment_others" />
 </navigation>

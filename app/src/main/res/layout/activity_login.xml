@@ -3,25 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/dark_gray">
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        app:layout_constraintBottom_toTopOf="@+id/apiKeyText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bot" />
+    android:layout_height="match_parent">
 
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_corners_orange_background"
         android:text="Login 🚀"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,11 +21,12 @@
         android:id="@+id/apiKeyText"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:background="@drawable/round_corners_light_orange_background"
+        android:background="@drawable/round_corners_textview_background"
         android:ems="10"
         android:gravity="center_horizontal|center_vertical"
         android:hint="Enter your API key. 🔑"
         android:inputType="textMultiLine"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/secretKeyText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -49,7 +37,7 @@
         android:id="@+id/secretKeyText"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:background="@drawable/round_corners_light_orange_background"
+        android:background="@drawable/round_corners_textview_background"
         android:ems="10"
         android:gravity="center_horizontal|center_vertical"
         android:hint="Enter your secret key. 🔐"
@@ -59,6 +47,17 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/apiKeyText" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:layout_constraintBottom_toTopOf="@+id/apiKeyText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bot" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

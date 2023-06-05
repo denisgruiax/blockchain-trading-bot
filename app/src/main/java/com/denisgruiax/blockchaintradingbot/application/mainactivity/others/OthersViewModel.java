@@ -1,4 +1,4 @@
-package com.denisgruiax.blockchaintradingbot.ui.others;
+package com.denisgruiax.blockchaintradingbot.application.mainactivity.others;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
