@@ -29,6 +29,10 @@ android {
     buildFeatures {
         viewBinding true
     }
+    packagingOptions {
+        pickFirst 'META-INF/DEPENDENCIES'
+        pickFirst 'META-INF/DEPENDENCIES'
+    }
 }
 
 dependencies {
@@ -40,6 +44,23 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+    implementation files('libs\\binance-connector-java-3.0.0rc1.jar')
+    implementation files('libs\\binance-api-client-1.0.1.jar')
+
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'commons-codec:commons-codec:1.11'
+
+    implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
+    implementation 'org.apache.commons:commons-lang3:3.6'
+    implementation files('libs\\binance-api-client-1.0.1.jar')
+
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+
+    implementation files('libs\\gson-2.10.1.jar')
+    implementation files('libs\\MPAndroidChart-v3.0.1.jar')
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_wallet_statistics">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.denisgruiax.blockchaintradingbot.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_wallet_statistics"
+        android:name="com.denisgruiax.blockchaintradingbot.application.mainactivity.walletstatistics.WalletStatisticsFragment"
+        android:label="@string/menu_wallet_statistics"
+        tools:layout="@layout/fragment_wallet_statistics" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.denisgruiax.blockchaintradingbot.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_bot_startegy"
+        android:name="com.denisgruiax.blockchaintradingbot.application.mainactivity.botstrategy.BotStrategyFragment"
+        android:label="@string/menu_bot_strategy"
+        tools:layout="@layout/fragment_bot_strategy" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.denisgruiax.blockchaintradingbot.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_others"
+        android:name="com.denisgruiax.blockchaintradingbot.application.mainactivity.charts.ChartsFragment"
+        android:label="@string/menu_others"
+        tools:layout="@layout/fragment_charts" />
 </navigation>
