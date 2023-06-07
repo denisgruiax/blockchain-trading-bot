@@ -5,41 +5,36 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".application.mainactivity.walletstatistics.WalletStatisticsFragment">
 
     <TextView
         android:id="@+id/totalBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/round_corners_light_gray_background"
         android:textAlignment="center"
         android:textColor="@color/textview"
         android:textSize="32sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="165dp"
-        tools:layout_editor_absoluteY="43dp"
-        tools:text="$0.00" />
-
-    <TextView
-        android:id="@+id/dailyPNL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textColor="@color/textview"
-        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/assetList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/totalBalance"
-        tools:text="PNL: 30%" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread"
+        tools:text="$0.00" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@id/assetList"
         android:layout_width="350dp"
         android:layout_height="500dp"
         android:background="@drawable/round_corners_light_gray_background"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="188dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalBalance">
 
         <LinearLayout
             android:id="@+id/linearLayout"

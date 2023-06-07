@@ -4,18 +4,8 @@ import com.denisgruiax.blockchaintradingbot.utils.apis.CoinGeckoEndpoints;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-//import org.apache.http.HttpResponse;
-//import org.apache.http.client.HttpClient;
-//import org.apache.http.client.methods.HttpGet;
-//import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
-
 import java.io.IOException;
 import java.util.concurrent.Callable;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Response;
-import okhttp3.Request;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;

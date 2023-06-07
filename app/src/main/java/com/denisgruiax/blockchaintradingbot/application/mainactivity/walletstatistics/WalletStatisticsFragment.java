@@ -1,12 +1,9 @@
 package com.denisgruiax.blockchaintradingbot.application.mainactivity.walletstatistics;
 
-import static android.content.Intent.getIntent;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +26,8 @@ import com.binance.api.client.BinanceApiClientFactory;
 import com.denisgruiax.blockchaintradingbot.data.remote.binanceapi.spottrade.FetchCryptoBalance;
 import com.denisgruiax.blockchaintradingbot.data.remote.coingeckoapi.fetchprice.FetchPrice;
 import com.denisgruiax.blockchaintradingbot.databinding.FragmentWalletStatisticsBinding;
-import com.denisgruiax.blockchaintradingbot.utils.CryptoId;
 import com.denisgruiax.blockchaintradingbot.utils.Keys;
+import com.denisgruiax.blockchaintradingbot.utils.CryptoId;
 import com.denisgruiax.blockchaintradingbot.utils.Symbol;
 
 public class WalletStatisticsFragment extends Fragment {
@@ -95,6 +92,7 @@ public class WalletStatisticsFragment extends Fragment {
 
         fetchPrices();
         fetchBalances();
+        totalBalance();
 
         updateUserInterface();
 
@@ -103,7 +101,6 @@ public class WalletStatisticsFragment extends Fragment {
 
     private void initializeViewElements() {
         totalBalanceText = binding.totalBalance;
-        dailyPNLText = binding.dailyPNL;
 
         name2 = binding.name2;
         price2 = binding.price2;
@@ -136,7 +133,6 @@ public class WalletStatisticsFragment extends Fragment {
 
     private void observeElements(WalletStatisticsModel walletStatisticsModel) {
         walletStatisticsModel.getTotalBalanceText().observe(getViewLifecycleOwner(), totalBalanceText::setText);
-        walletStatisticsModel.getDailyPNLText().observe(getViewLifecycleOwner(), dailyPNLText::setText);
 
         walletStatisticsModel.getPrice2().observe(getViewLifecycleOwner(), price2::setText);
         walletStatisticsModel.getPrice3().observe(getViewLifecycleOwner(), price3::setText);
@@ -174,6 +170,33 @@ public class WalletStatisticsFragment extends Fragment {
             } catch (InterruptedException interruptedException) {
                 throw new RuntimeException(interruptedException);
             }
+        }
+    }
+
+    private void totalBalance() {
+        boolean areNotNull = false;
+        boolean areDone = false;
+        boolean balanceAreNotNull;
+        boolean balanceAreDone;
+
+        balanceAreNotNull = (futureBalance2 != null) && (futureBalance3 != null) && (futureBalance4 != null) && (futureBalance5 != null) && (futureBalance6 != null);
+
+        if (balanceAreNotNull)
+            balanceAreDone = futureBalance2.isDone() && futureBalance3.isDone() && futureBalance4.isDone() && futureBalance5.isDone() && futureBalance6.isDone();
+
+        areNotNull = (futurePrice2 != null) && (futurePrice3 != null) && (futurePrice4 != null) && (futurePrice5 != null) && (futurePrice6 != null);
+
+        if (areNotNull)
+            areDone = futurePrice2.isDone() && futurePrice3.isDone() && futurePrice4.isDone() && futurePrice5.isDone() && futurePrice6.isDone();
+
+        try {
+            Double totalBalance = (futurePrice2.get() * Double.parseDouble(futureBalance2.get()) +futurePrice3.get() * Double.parseDouble(futureBalance3.get())+futurePrice4.get() * Double.parseDouble(futureBalance4.get())+futurePrice5.get() * Double.parseDouble(futureBalance5.get())+futurePrice6.get() * Double.parseDouble(futureBalance6.get()));
+            DecimalFormat decimalFormat = new DecimalFormat("0.00");
+            totalBalanceText.setText(decimalFormat.format(totalBalance).toString() + "$");
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -1,5 +1,7 @@
 package com.denisgruiax.blockchaintradingbot.domains.botfactory;
 
-public abstract class BotFactory {
-    public abstract Bot createBot();
+public class BotFactory {
+    public Bot createBot(){
+        return new BotLaky();
+    }
 }

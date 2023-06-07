@@ -1,6 +1,7 @@
 package com.denisgruiax.blockchaintradingbot.domains.botfactory;
 
 import com.denisgruiax.blockchaintradingbot.domains.strategies.Strategy;
+import com.denisgruiax.blockchaintradingbot.utils.Order;
 
 public abstract class Bot {
     private final Strategy strategy;
@@ -9,8 +10,8 @@ public abstract class Bot {
         this.strategy = strategy;
     }
 
-    public void executeStrategy() {
-        strategy.executeStrategy();
+    public Order executeStrategy() {
+        return strategy.executeStrategy();
     }
 
     // Other common bot methods

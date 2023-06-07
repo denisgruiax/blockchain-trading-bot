@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel;
 public class WalletStatisticsModel extends ViewModel {
 
     private final MutableLiveData<String> totalBalance;
-    private final MutableLiveData<String> dailyPNL;
 
     private final MutableLiveData<String> price2;
     private final MutableLiveData<String> price3;
@@ -18,7 +17,6 @@ public class WalletStatisticsModel extends ViewModel {
 
     public WalletStatisticsModel() {
         totalBalance = new MutableLiveData<>();
-        dailyPNL = new MutableLiveData<>();
 
         price2 = new MutableLiveData<>();
         price3 = new MutableLiveData<>();
@@ -28,7 +26,6 @@ public class WalletStatisticsModel extends ViewModel {
 
         MediatorLiveData<String> mediatorLiveData = new MediatorLiveData<>();
         mediatorLiveData.addSource(totalBalance, text -> mediatorLiveData.setValue(text));
-        mediatorLiveData.addSource(dailyPNL, text -> mediatorLiveData.setValue(text));
 
         mediatorLiveData.addSource(price2, text -> mediatorLiveData.setValue(text));
         mediatorLiveData.addSource(price3, text -> mediatorLiveData.setValue(text));
@@ -39,10 +36,6 @@ public class WalletStatisticsModel extends ViewModel {
 
     public LiveData<String> getTotalBalanceText() {
         return totalBalance;
-    }
-
-    public LiveData<String> getDailyPNLText() {
-        return dailyPNL;
     }
 
     public LiveData<String> getPrice2() {
