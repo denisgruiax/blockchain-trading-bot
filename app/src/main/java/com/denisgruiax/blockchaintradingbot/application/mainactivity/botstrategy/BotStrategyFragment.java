@@ -57,6 +57,9 @@ public class BotStrategyFragment extends Fragment {
         return root;
     }
 
+    public void updateListOfPrices(){}
+    public void checkStrategyOfTheCurrentBot(){}
+
     private void updateUserInterface() {
         runnable = new Runnable() {
             @Override
@@ -64,6 +67,8 @@ public class BotStrategyFragment extends Fragment {
                 if (prices.isDone()) {
                     try {
                         List<Double> listOfPrices = prices.get();
+                        updateListOfPrices();
+                        checkStrategyOfTheCurrentBot();
                     } catch (ExecutionException e) {
                         throw new RuntimeException(e);
                     } catch (InterruptedException e) {

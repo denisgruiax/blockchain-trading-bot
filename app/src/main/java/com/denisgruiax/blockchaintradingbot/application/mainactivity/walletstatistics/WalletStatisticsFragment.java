@@ -33,7 +33,6 @@ import com.denisgruiax.blockchaintradingbot.utils.Symbol;
 public class WalletStatisticsFragment extends Fragment {
 
     private static final String API_URL = "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30";
-    private final Handler handler = new Handler(Looper.getMainLooper());
 
     private FragmentWalletStatisticsBinding binding;
     private SharedPreferences sharedPreferences;
@@ -70,9 +69,10 @@ public class WalletStatisticsFragment extends Fragment {
     private Future<Double> futurePrice6;
     private Future<String> futureBalance6;
 
-    private BinanceApiClientFactory binanceApiClientFactory;
+    private final Handler handler = new Handler(Looper.getMainLooper());
     private ExecutorService executorService = new ThreadPoolExecutor(1, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
     private Runnable runnable;
+    private BinanceApiClientFactory binanceApiClientFactory;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -174,30 +174,31 @@ public class WalletStatisticsFragment extends Fragment {
     }
 
     private void totalBalance() {
-        boolean areNotNull = false;
-        boolean areDone = false;
-        boolean balanceAreNotNull;
-        boolean balanceAreDone;
+        boolean futureBalancesAreNotNull = false;
+        boolean futurePricesAreNotNull = false;
+        boolean balancesAreDone = false;
+        boolean pricesAreDone = false;
 
-        balanceAreNotNull = (futureBalance2 != null) && (futureBalance3 != null) && (futureBalance4 != null) && (futureBalance5 != null) && (futureBalance6 != null);
+        futureBalancesAreNotNull = (futureBalance2 != null) && (futureBalance3 != null) && (futureBalance4 != null) && (futureBalance5 != null) && (futureBalance6 != null);
 
-        if (balanceAreNotNull)
-            balanceAreDone = futureBalance2.isDone() && futureBalance3.isDone() && futureBalance4.isDone() && futureBalance5.isDone() && futureBalance6.isDone();
+        if (futureBalancesAreNotNull)
+            balancesAreDone = futureBalance2.isDone() && futureBalance3.isDone() && futureBalance4.isDone() && futureBalance5.isDone() && futureBalance6.isDone();
 
-        areNotNull = (futurePrice2 != null) && (futurePrice3 != null) && (futurePrice4 != null) && (futurePrice5 != null) && (futurePrice6 != null);
+        futurePricesAreNotNull = (futurePrice2 != null) && (futurePrice3 != null) && (futurePrice4 != null) && (futurePrice5 != null) && (futurePrice6 != null);
 
-        if (areNotNull)
-            areDone = futurePrice2.isDone() && futurePrice3.isDone() && futurePrice4.isDone() && futurePrice5.isDone() && futurePrice6.isDone();
+        if (futurePricesAreNotNull)
+            pricesAreDone = futurePrice2.isDone() && futurePrice3.isDone() && futurePrice4.isDone() && futurePrice5.isDone() && futurePrice6.isDone();
 
-        try {
-            Double totalBalance = (futurePrice2.get() * Double.parseDouble(futureBalance2.get()) +futurePrice3.get() * Double.parseDouble(futureBalance3.get())+futurePrice4.get() * Double.parseDouble(futureBalance4.get())+futurePrice5.get() * Double.parseDouble(futureBalance5.get())+futurePrice6.get() * Double.parseDouble(futureBalance6.get()));
-            DecimalFormat decimalFormat = new DecimalFormat("0.00");
-            totalBalanceText.setText(decimalFormat.format(totalBalance).toString() + "$");
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        if (balancesAreDone && pricesAreDone)
+            try {
+                Double totalBalance = (futurePrice2.get() * Double.parseDouble(futureBalance2.get()) + futurePrice3.get() * Double.parseDouble(futureBalance3.get()) + futurePrice4.get() * Double.parseDouble(futureBalance4.get()) + futurePrice5.get() * Double.parseDouble(futureBalance5.get()) + futurePrice6.get() * Double.parseDouble(futureBalance6.get()));
+                DecimalFormat decimalFormat = new DecimalFormat("0.00");
+                totalBalanceText.setText(decimalFormat.format(totalBalance).toString() + "$");
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
     }
 
     private void updateUserInterface() {
@@ -206,7 +207,8 @@ public class WalletStatisticsFragment extends Fragment {
             public void run() {
                 futurePricesAreDone();
                 fetchBalance();
-                handler.postDelayed(this, 500);
+                totalBalance();
+                handler.postDelayed(this, 5000);
             }
         };
 
