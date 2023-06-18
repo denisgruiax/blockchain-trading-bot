@@ -7,22 +7,20 @@ import com.binance.api.client.exception.BinanceApiException;
 
 import java.util.concurrent.Callable;
 
-public class FetchBinanceAccount implements Callable<String> {
+public class FetchBinanceAccount implements Callable<Account> {
     private final BinanceApiClientFactory binanceApiClientFactory;
 
     public FetchBinanceAccount(BinanceApiClientFactory binanceApiClientFactory) {
         this.binanceApiClientFactory = binanceApiClientFactory;
     }
 
-    public String call() {
-
+    public Account call() {
         BinanceApiRestClient client = binanceApiClientFactory.newRestClient();
 
         try {
-            Account account = client.getAccount();
-            return account.getAssetBalance("BTC").getFree() + "AccountOK";
+            return client.getAccount();
         } catch (BinanceApiException binanceApiException) {
-            return "AccountX";
+            return null;
         }
     }
 }

@@ -21,9 +21,9 @@ public class FetchCryptoBalance implements Callable<String> {
 
         try {
             Account account = client.getAccount();
-            return account.getAssetBalance(symbol).getFree() + "PriceOK";
+            return account.getAssetBalance(symbol).getFree();
         } catch (BinanceApiException binanceApiException) {
-            return "PriceX";
+            return "0.0";
         }
     }
 }

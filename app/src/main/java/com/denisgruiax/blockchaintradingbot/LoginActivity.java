@@ -50,8 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private BinanceApiClientFactory binanceApiClientFactory;
     private BinanceApiRestClient client;
-    private Future<String> futureBinanceAccount;
-    private Future<Double> futurePrice;
+    private Future<Account> futureBinanceAccount;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,24 +132,21 @@ public class LoginActivity extends AppCompatActivity {
         binanceApiClientFactory = BinanceApiClientFactory.newInstance(apiKey, secretKey);
 
         futureBinanceAccount = executorService.submit(new FetchBinanceAccount(binanceApiClientFactory));
-        futurePrice = executorService.submit(new FetchPrice("BTC", "USD"));
     }
 
-    private void getAccountFromFutureAccount() {
+    private Account getAccountFromFutureAccount() {
         try {
-            Thread.sleep(2000);
             if (futureBinanceAccount != null)
-                if (futureBinanceAccount.isDone())
-                    Log.e("Result", futureBinanceAccount.get());
-
-            if (futurePrice != null)
-                if (futurePrice.isDone())
-                    Log.e("Result", futurePrice.get().toString()+"$");
+                if (futureBinanceAccount.isDone()) {
+                    return futureBinanceAccount.get();
+                }
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            return null;
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            return null;
         }
+
+        return null;
     }
 
     private void onLoginButtonPress() {
@@ -158,7 +154,9 @@ public class LoginActivity extends AppCompatActivity {
             saveDictionaryInMemmory("apiKey", apiKey);
             saveDictionaryInMemmory("secretKey", secretKey);
 
-            startMyMainActivity();
+            if (getAccountFromFutureAccount() != null)
+                startMyMainActivity();
+            else toastLongMessage("Wrong API keys!");
         });
     }
 
@@ -167,7 +165,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 getAccountFromFutureAccount();
-                Log.e("Loop", "Loop");
                 handler.postDelayed(this, 1000);
             }
         };
