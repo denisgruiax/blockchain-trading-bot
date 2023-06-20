@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,14 +34,25 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 
-
 public class BotStrategyFragment extends Fragment {
-    private FragmentBotStrategyBinding binding;
-    private TextView textView;
     private final Handler handler = new Handler(Looper.getMainLooper());
+    Future<List<Double>> prices;
+    private FragmentBotStrategyBinding binding;
+    private TextView textViewCreateAndConfigureBot;
+    private TextView textViewBotName;
+    private EditText editTextBotName;
+
+    private TextView textViewBehavior;
+    private Spinner spinnerBehaviors;
+
+    private TextView textViewStrategy;
+    private Spinner spinnerStrategies;
+
+    private TextView textViewSelectBot;
+    private Spinner spinnerSelectBot;
+
     private ExecutorService executorService = new ThreadPoolExecutor(1, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
     private Runnable runnable;
-    Future<List<Double>> prices;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -47,18 +62,37 @@ public class BotStrategyFragment extends Fragment {
         binding = FragmentBotStrategyBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        textView = binding.textBot;
-        botStrategyModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        textViewCreateAndConfigureBot = binding.textViewCreateAndConfigureBot;
+        botStrategyModel.getCreateAndConfigureBot().observe(getViewLifecycleOwner(), textViewCreateAndConfigureBot::setText);
 
         prices = executorService.submit(new FetchListOfPrices(CryptoId.bitcoin, "usd"));
+
+        Spinner spinnerBehaviors = binding.spinnerBehaviors;
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(binding.getRoot().getContext(), android.R.layout.simple_spinner_item);
+        spinnerBehaviors.setAdapter(spinnerAdapter);
+        Button buttonLaunchBot = binding.buttonLaunchBot;
+
+        buttonLaunchBot.setOnClickListener(view -> {
+            List<String> spinnerData = new ArrayList<>();
+            spinnerData.add("Option 1");
+            spinnerData.add("Option 2");
+
+            spinnerAdapter.clear();
+            spinnerAdapter.addAll(spinnerData);
+            spinnerAdapter.notifyDataSetChanged();
+        });
 
         updateUserInterface();
 
         return root;
     }
 
-    public void updateListOfPrices(){}
-    public void checkStrategyOfTheCurrentBot(){}
+    public void updateListOfPrices() {
+    }
+
+    public void checkStrategyOfTheCurrentBot() {
+    }
 
     private void updateUserInterface() {
         runnable = new Runnable() {

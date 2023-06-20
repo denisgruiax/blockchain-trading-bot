@@ -25,10 +25,13 @@ import java.util.concurrent.TimeUnit;
 import com.binance.api.client.BinanceApiClientFactory;
 import com.denisgruiax.blockchaintradingbot.data.remote.binanceapi.spottrade.FetchCryptoBalance;
 import com.denisgruiax.blockchaintradingbot.data.remote.coingeckoapi.fetchprice.FetchPrice;
+import com.denisgruiax.blockchaintradingbot.databinding.ActivityMainBinding;
 import com.denisgruiax.blockchaintradingbot.databinding.FragmentWalletStatisticsBinding;
+import com.denisgruiax.blockchaintradingbot.databinding.NavHeaderMainBinding;
 import com.denisgruiax.blockchaintradingbot.utils.Keys;
 import com.denisgruiax.blockchaintradingbot.utils.CryptoId;
 import com.denisgruiax.blockchaintradingbot.utils.Symbol;
+import com.google.android.material.navigation.NavigationView;
 
 public class WalletStatisticsFragment extends Fragment {
 

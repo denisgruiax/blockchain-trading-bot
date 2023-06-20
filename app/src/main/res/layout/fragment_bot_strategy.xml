@@ -15,28 +15,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textStartBot">
+        app:layout_constraintTop_toBottomOf="@+id/textViewStartBot">
 
         <Spinner
-            android:id="@+id/spinnerStrategies2"
+            android:id="@+id/spinnerSelectBot"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:background="@drawable/round_corners_light_gray_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/nameText"
+            app:layout_constraintStart_toEndOf="@+id/textViewSelectBot"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
         <TextView
-            android:id="@+id/nameText"
+            android:id="@+id/textViewSelectBot"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:text="Bot Name:"
             android:textColor="@color/purple_200"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/spinnerStrategies2"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerSelectBot"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -45,7 +46,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/textBot"
+        android:id="@+id/textViewCreateAndConfigureBot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
@@ -56,10 +57,10 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Create and onfigure the trading bot. ⚙️" />
+        tools:text="Create and configure the trading bot. ⚙️" />
 
     <TextView
-        android:id="@+id/textStartBot"
+        android:id="@+id/textViewStartBot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
@@ -80,10 +81,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textBot">
+        app:layout_constraintTop_toBottomOf="@+id/textViewCreateAndConfigureBot">
 
         <TextView
-            android:id="@+id/textSelectBot"
+            android:id="@+id/textViewBotName"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:text="Bot Name:"
@@ -100,6 +101,7 @@
             android:id="@+id/editTextSelectBot"
             android:layout_width="120dp"
             android:layout_height="40dp"
+            android:background="@drawable/round_corners_light_gray_background"
             android:ems="10"
             android:hint="name"
             android:inputType="text"
@@ -108,7 +110,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textSelectBot"
+            app:layout_constraintStart_toEndOf="@+id/textViewBotName"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -141,6 +143,7 @@
             android:id="@+id/spinnerBehaviors"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:background="@drawable/round_corners_light_gray_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -154,7 +157,7 @@
         android:id="@+id/constraintLayout8"
         android:layout_width="400dp"
         android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/textStartBot"
+        app:layout_constraintBottom_toTopOf="@+id/textViewStartBot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -178,6 +181,7 @@
             android:id="@+id/spinnerStrategies"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:background="@drawable/round_corners_light_gray_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

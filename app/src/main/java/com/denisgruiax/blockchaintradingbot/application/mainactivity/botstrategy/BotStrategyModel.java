@@ -5,15 +5,24 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class BotStrategyModel extends ViewModel {
+    private final MutableLiveData<String> textViewCreateAndConfigureBot;
 
-    private final MutableLiveData<String> mText;
+    //private final MutableLiveData<String> textViewBotName;
+    private final MutableLiveData<String> textViewSelectTradingBot;
+
+    //private final MutableLiveData<String> textViewSelectTradingBot;
+    //private final MutableLiveData<String> textViewSelectTradingBot;
 
     public BotStrategyModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is a fragment");
+        textViewCreateAndConfigureBot = new MutableLiveData<>();
+        textViewSelectTradingBot = new MutableLiveData<>();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<String> getCreateAndConfigureBot() {
+        return textViewCreateAndConfigureBot;
+    }
+
+    public LiveData<String> getSelectTradingBotText(){
+        return textViewSelectTradingBot;
     }
 }

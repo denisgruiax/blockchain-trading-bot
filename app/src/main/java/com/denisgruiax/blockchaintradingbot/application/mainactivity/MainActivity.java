@@ -57,10 +57,6 @@ public class MainActivity extends AppCompatActivity {
         secretKeyText = headerView.findViewById(R.id.textView2);
 
         getKeysFromIntent();
-
-        SpotClient spotClient = new SpotClientImpl(apiKey, secretKey);
-
-        apiKeyText.setText(spotClient.toString());
     }
 
     private void getKeysFromIntent() {
