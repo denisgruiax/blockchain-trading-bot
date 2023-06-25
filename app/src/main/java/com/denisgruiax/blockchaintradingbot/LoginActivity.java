@@ -33,14 +33,16 @@ import java.util.concurrent.TimeUnit;
 public class LoginActivity extends AppCompatActivity {
 
     private final Handler handler = new Handler(Looper.getMainLooper());
+
     private AppBarConfiguration appBarConfiguration;
     private SharedPreferences sharedPreferences;
+
     private String apiKey;
     private String secretKey;
-    private Toast toastMessage;
 
     private EditText textViewApiKey;
     private EditText textViewSecretKey;
+
     private Button buttonLogin;
 
     private ExecutorService executorService = new ThreadPoolExecutor(1, 10, 0L, TimeUnit.MILLISECONDS,
@@ -59,11 +61,8 @@ public class LoginActivity extends AppCompatActivity {
 
         initializeUIElements();
 
-        // apiKey = apiKeyText.getText().toString();
-        apiKey = Keys.getApiKey();
-
-        // secretKey = secretKeyText.getText().toString();
-        secretKey = Keys.getSecretKey();
+        apiKey = textViewApiKey.getText().toString();
+        secretKey = textViewSecretKey.getText().toString();
 
         fetchFutureBinanceAccount();
 
@@ -75,13 +74,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        /*getApiKeysFromMemory();
+        getApiKeysFromMemory();
 
         if ((apiKey != null) && (secretKey != null)) {
             startMyMainActivity();
 
             finish();
-        }*/
+        }
     }
 
     @Override
@@ -93,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initializeUIElements() {
         textViewApiKey = findViewById(R.id.apiKeyText);
-        textViewApiKey = findViewById(R.id.secretKeyText);
+        textViewSecretKey = findViewById(R.id.secretKeyText);
 
         buttonLogin = findViewById(R.id.buttonLogin);
 

@@ -15,29 +15,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewStartBot">
+        app:layout_constraintTop_toBottomOf="@+id/textViewLaunchBot">
 
         <Spinner
-            android:id="@+id/spinnerSelectBot"
+            android:id="@+id/spinnerSelectBotForLaunch"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:background="@drawable/round_corners_light_gray_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textViewSelectBot"
+            app:layout_constraintStart_toEndOf="@+id/textViewBotNameForLaunch"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
         <TextView
-            android:id="@+id/textViewSelectBot"
+            android:id="@+id/textViewBotNameForLaunch"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:text="Bot Name:"
             android:textColor="@color/purple_200"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/spinnerSelectBot"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerSelectBotForLaunch"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -51,26 +51,26 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textColor="@color/textview"
-        android:textSize="30sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Create and configure the trading bot. ⚙️" />
+        tools:text="Create and configure\nthe trading bot. ⚙️" />
 
     <TextView
-        android:id="@+id/textViewStartBot"
+        android:id="@+id/textViewLaunchBot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textColor="@color/textview"
-        android:textSize="30sp"
+        android:textSize="26sp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCreateBot"
         tools:text="Launch bot. 🚀" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -91,14 +91,14 @@
             android:textColor="@color/purple_200"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/editTextSelectBot"
+            app:layout_constraintEnd_toStartOf="@+id/editTextSetBotName"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
         <EditText
-            android:id="@+id/editTextSelectBot"
+            android:id="@+id/editTextSetBotName"
             android:layout_width="120dp"
             android:layout_height="40dp"
             android:background="@drawable/round_corners_light_gray_background"
@@ -126,28 +126,28 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
 
         <TextView
-            android:id="@+id/textViewBehaviors"
+            android:id="@+id/textViewBehavior"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:text="Behavior:"
             android:textColor="@color/purple_200"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/spinnerBehaviors"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerSelectBotBehavior"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
         <Spinner
-            android:id="@+id/spinnerBehaviors"
+            android:id="@+id/spinnerSelectBotBehavior"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:background="@drawable/round_corners_light_gray_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textViewBehaviors"
+            app:layout_constraintStart_toEndOf="@+id/textViewBehavior"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
@@ -157,7 +157,7 @@
         android:id="@+id/constraintLayout8"
         android:layout_width="400dp"
         android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewStartBot"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -171,14 +171,14 @@
             android:textColor="@color/purple_200"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/spinnerStrategies"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerSelectStrategy"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
         <Spinner
-            android:id="@+id/spinnerStrategies"
+            android:id="@+id/spinnerSelectStrategy"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:background="@drawable/round_corners_light_gray_background"
@@ -189,6 +189,19 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/buttonCreateBot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_corners_dark_blue_background"
+        android:text="CREATE 🤖"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewLaunchBot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout10" />
 
     <Button
         android:id="@+id/buttonLaunchBot"
@@ -202,5 +215,41 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout9" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout10"
+        android:layout_width="400dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonCreateBot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
+
+        <TextView
+            android:id="@+id/textViewCrypto"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Crypto:"
+            android:textColor="@color/purple_200"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerSelectCrypto"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <Spinner
+            android:id="@+id/spinnerSelectCrypto"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/round_corners_light_gray_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textViewCrypto"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

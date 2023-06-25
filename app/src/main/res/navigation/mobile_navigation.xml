@@ -12,14 +12,14 @@
         tools:layout="@layout/fragment_wallet_statistics" />
 
     <fragment
-        android:id="@+id/nav_bot_startegy"
+        android:id="@+id/nav_bot_strategy"
         android:name="com.denisgruiax.blockchaintradingbot.application.mainactivity.botstrategy.BotStrategyFragment"
         android:label="@string/menu_bot_strategy"
         tools:layout="@layout/fragment_bot_strategy" />
 
     <fragment
-        android:id="@+id/nav_others"
+        android:id="@+id/nav_charts"
         android:name="com.denisgruiax.blockchaintradingbot.application.mainactivity.charts.ChartsFragment"
-        android:label="@string/menu_others"
+        android:label="@string/menu_charts"
         tools:layout="@layout/fragment_charts" />
 </navigation>

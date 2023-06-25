@@ -9,5 +9,5 @@
 
     <string name="menu_wallet_statistics">Wallet Statistics</string>
     <string name="menu_bot_strategy">Bot Strategy</string>
-    <string name="menu_others">Others</string>
+    <string name="menu_charts">Charts</string>
 </resources>

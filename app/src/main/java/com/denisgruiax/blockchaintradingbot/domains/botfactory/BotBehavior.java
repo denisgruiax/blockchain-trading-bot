@@ -1,10 +1,10 @@
 package com.denisgruiax.blockchaintradingbot.domains.botfactory;
 
 public enum BotBehavior {
-    AGGRESSIVE("Aggressive Bot"),
-    RISKY("Risky Bot"),
-    MODERATE("Moderate Bot"),
-    CONSERVATIVE("Conservative Bot");
+    AGGRESSIVE("Aggressive"),
+    RISKY("Risky"),
+    MODERATE("Moderate"),
+    CONSERVATIVE("Conservative");
 
     private final String displayName;
 

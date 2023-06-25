@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_wallet_statistics, R.id.nav_bot_startegy, R.id.nav_others)
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_wallet_statistics, R.id.nav_bot_strategy, R.id.nav_charts)
                 .setOpenableLayout(drawer).build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
         secretKeyText = headerView.findViewById(R.id.textView2);
 
         getKeysFromIntent();
+
+        apiKeyText.setText(apiKey);
+        secretKeyText.setText(secretKey);
     }
 
     private void getKeysFromIntent() {

@@ -5,11 +5,13 @@ import com.denisgruiax.blockchaintradingbot.utils.Order;
 
 public class Bot {
     private String name;
+    private String crypto;
     private BotBehavior behavior;
     private Strategy strategy;
 
-    public Bot(String name, BotBehavior behavior, Strategy strategy) {
+    public Bot(String name, String crypto, BotBehavior behavior, Strategy strategy) {
         this.name = name;
+        this.crypto = crypto;
         this.behavior = behavior;
         this.strategy = strategy;
     }
@@ -25,6 +27,10 @@ public class Bot {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getCrypto(){return crypto;}
+
+    public void setCrypto(String crypto){this.crypto = crypto;}
 
     public BotBehavior getBehavior() {
         return behavior;

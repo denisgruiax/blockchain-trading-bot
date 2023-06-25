@@ -1,6 +1,9 @@
 package com.denisgruiax.blockchaintradingbot.domains.strategies.implementations;
 
+import androidx.annotation.NonNull;
+
 import com.denisgruiax.blockchaintradingbot.data.remote.coingeckoapi.fetchprice.FetchListOfPrices;
+import com.denisgruiax.blockchaintradingbot.domains.botfactory.BotBehavior;
 import com.denisgruiax.blockchaintradingbot.domains.strategies.Strategy;
 import com.denisgruiax.blockchaintradingbot.utils.Order;
 
@@ -17,69 +20,49 @@ public class MovingAverageStrategyImpl implements Strategy {
     Future<List<Double>> futurePrices;
     private String cryptoId;
     private String currency;
+    private BotBehavior botBehavior;
     private int sizeOfShortMovingAverage;
     private int sizeOfLongMovingAverage;
-    private double oldShortMovingAverage;
-    private double oldLongMovingAverage;
     private double shortMovingAverage;
     private double longMovingAverage;
     private List<Double> prices;
     private ExecutorService executorService;
 
-    public MovingAverageStrategyImpl(String cryptoId, String currency, int sizeOfShortMovingAverage, int sizeOfLongMovingAverage) {
-        this.cryptoId = cryptoId;
-        this.currency = currency;
-        this.sizeOfShortMovingAverage = sizeOfShortMovingAverage;
-        this.sizeOfLongMovingAverage = sizeOfLongMovingAverage;
-        prices = new ArrayList<Double>();
-        executorService = new ThreadPoolExecutor(5, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+    public MovingAverageStrategyImpl(BotBehavior botBehavior, List<Double> prices) {
+        this.botBehavior = botBehavior;
+        this.prices = prices;
+
+        switch (this.botBehavior) {
+            case CONSERVATIVE:
+                this.sizeOfShortMovingAverage = 10;
+                this.sizeOfLongMovingAverage = 20;
+                break;
+
+            case MODERATE:
+                this.sizeOfShortMovingAverage = 9;
+                this.sizeOfLongMovingAverage = 20;
+                break;
+
+            case RISKY:
+                this.sizeOfShortMovingAverage = 9;
+                this.sizeOfLongMovingAverage = 22;
+                break;
+
+            case AGGRESSIVE:
+                this.sizeOfShortMovingAverage = 7;
+                this.sizeOfLongMovingAverage = 25;
+                break;
+        }
+
     }
 
     @Override
     public Order executeStrategy() {
-        fetchPrices();
         return checkSignal();
     }
 
-
-    private void fetchPrices() {
-        futurePrices = executorService.submit(new FetchListOfPrices(cryptoId, currency));
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (futurePrices.isDone()) {
-            try {
-                prices = futurePrices.get();
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    private List<Double> fillMovingAverage(int sizeOfMovingAverage) {
-        List<Double> movingAverage = new ArrayList<Double>(sizeOfMovingAverage);
-
-        if (futurePrices.isDone()) {
-            try {
-                movingAverage = futurePrices.get();
-
-                if (movingAverage.size() >= sizeOfMovingAverage)
-                    return movingAverage.subList(movingAverage.size() - sizeOfMovingAverage, movingAverage.size());
-
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        return movingAverage;
+    private List<Double> getPricesForMovingAverage(int sizeOfMovingAverage) {
+        return prices.subList(prices.size() - sizeOfMovingAverage, prices.size());
     }
 
     private double calculateMovingAverage(List<Double> movingAverage) {
@@ -90,22 +73,18 @@ public class MovingAverageStrategyImpl implements Strategy {
     }
 
     private Order checkSignal() {
-        double lastPrice = 0.0;
+        shortMovingAverage = calculateMovingAverage(getPricesForMovingAverage(sizeOfShortMovingAverage));
+        longMovingAverage = calculateMovingAverage(getPricesForMovingAverage(sizeOfLongMovingAverage));
 
-        lastPrice = prices.get(prices.size());
-        prices.remove(prices.size());
-        oldShortMovingAverage = calculateMovingAverage(fillMovingAverage(sizeOfShortMovingAverage - 1));
-        oldLongMovingAverage = calculateMovingAverage(fillMovingAverage(sizeOfLongMovingAverage - 1));
-
-        prices.add(lastPrice);
-        shortMovingAverage = calculateMovingAverage(fillMovingAverage(sizeOfShortMovingAverage));
-        longMovingAverage = calculateMovingAverage(fillMovingAverage(sizeOfLongMovingAverage));
-
-        if ((shortMovingAverage > longMovingAverage) && (oldShortMovingAverage < oldLongMovingAverage))
+        if (shortMovingAverage > longMovingAverage)
             return Order.BUY;
-        else if ((shortMovingAverage < longMovingAverage) && (oldShortMovingAverage < oldLongMovingAverage))
+        else if (shortMovingAverage < longMovingAverage)
             return Order.SELL;
 
         return Order.NOT_READY;
+    }
+
+    public void setPrices(List<Double> prices) {
+        this.prices = prices;
     }
 }

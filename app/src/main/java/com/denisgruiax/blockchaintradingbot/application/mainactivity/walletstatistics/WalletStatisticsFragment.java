@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,9 @@ public class WalletStatisticsFragment extends Fragment {
     private FragmentWalletStatisticsBinding binding;
     private SharedPreferences sharedPreferences;
     private TextView totalBalanceText;
-    private TextView dailyPNLText;
+
+    private String apiKey;
+    private String secretKey;
 
     private TextView name2;
     private TextView price2;
@@ -85,7 +88,10 @@ public class WalletStatisticsFragment extends Fragment {
         binding = FragmentWalletStatisticsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        binanceApiClientFactory = BinanceApiClientFactory.newInstance(Keys.getApiKey(), Keys.getSecretKey());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        getApiKeysFromMemory();
+
+        binanceApiClientFactory = BinanceApiClientFactory.newInstance(apiKey, secretKey);
 
         initializeViewElements();
 
@@ -100,6 +106,11 @@ public class WalletStatisticsFragment extends Fragment {
         updateUserInterface();
 
         return root;
+    }
+
+    private void getApiKeysFromMemory() {
+        apiKey = sharedPreferences.getString("apiKey", null);
+        secretKey = sharedPreferences.getString("secretKey", null);
     }
 
     private void initializeViewElements() {
